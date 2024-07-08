@@ -59,6 +59,11 @@ body {
     cursor: pointer;
 }
 
+.changer:hover {
+    background-color: red;
+    color: white;
+}
+
 #rollDice {
     position: absolute;
     top: 400px;

@@ -5,7 +5,7 @@ const totalScore = document.querySelector('#totalScore')
 const totalScore2 = document.querySelector('#totalScore2')
 const hold = document.querySelector('#hold')
 
-
+let currentPlayer = 1;
 
 let dice = [
     {catagory:1, image: 'https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FNljHxzJBzz78N74Qg6E1%2Fuploads%2FG41sjO00fBxSd2QLybOT%2F1.png?alt=media&token=dff66b6f-26e4-4a5c-a682-e437a8d023dd'},
@@ -19,22 +19,57 @@ let dice = [
 rollDice.addEventListener('click', ()=> {
     let number = Math.ceil(Math.random() * 6)
     console.log(number);
+
     dice.forEach((item)=> {
         if(item.catagory ==number) {
             diceImage.src = item.image
-            score[0].innerHTML = +score[0].innerHTML + number
-        } else if (number === 1) {
-            score[0].innerHTML = 0
-        }  
+            score[currentPlayer - 1].innerHTML = +score[currentPlayer - 1].innerHTML + number
+        } 
     })
 
+    if (number === 1) {
+        score[currentPlayer - 1].innerHTML = 0;
+        // Switch players
+        switchPlayers();
+    }
+
+    if ((+totalScore.innerHTML || +totalScore2.innerHTML) >= 100) {
+        alert(`${currentPlayer} is win the game`)
+    }
 
 })
 
 
+//Hold button function
 hold.addEventListener('click', ()=> {
-    totalScore.innerHTML = +totalScore.innerHTML +  +score[0].innerHTML
-    score[0].innerHTML = 0
+    if(currentPlayer === 1) {
+        totalScore.innerHTML = +totalScore.innerHTML +  +score[0].innerHTML
+    } 
+    else if (currentPlayer === 2) {
+        totalScore2.innerHTML = +totalScore2.innerHTML + +score[1].innerHTML;
+    }
+    score[currentPlayer - 1].innerHTML = 0;
+    switchPlayers();
+
 })
+
+
+// Switch Player function
+function switchPlayers() {
+    // Toggle between player 1 and player 2
+    currentPlayer = currentPlayer === 1 ? 2 : 1;
+    console.log(`Switched to Player ${currentPlayer}`);
+}
+
+
+// New Game Button Function
+document.querySelector('#newGame').addEventListener('click', ()=> {
+    score[0].innerHTML = 0
+    score[1].innerHTML = 0
+    totalScore.innerHTML = 0
+    totalScore2.innerHTML = 0
+})
+
+
 
 
